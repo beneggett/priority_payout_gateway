@@ -1,8 +1,8 @@
-# PriorityPayoutGateway
+[![Gem Version](https://badge.fury.io/rb/priority_payout_gateway.svg)](https://badge.fury.io/rb/priority_payout_gateway)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/priority_payout_gateway`. To experiment with that code, run `bin/console` for an interactive prompt.
+# Priority Payout Gateway
 
-TODO: Delete this and the text above, and describe your gem
+This gem implements the Priority Payout Gateway (NMI) Direct Post & Query API sets as documented here: https://secure.prioritypayoutgateway.com/merchants/resources/integration/integration_portal.php
 
 ## Installation
 
@@ -22,7 +22,38 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Set your username & password in an environment variable in your application or in a `.env` file directly from the gem:
+```
+PPG_USERNAME = my_user
+PPG_PASSWORD = my_pass
+```
+
+There are three API sets:
+
+### Transaction
+`sale` - `PriorityPayoutGateway::Transaction.new.sale ccnumber: '4111111111111111', ccexp: "0219", first_name: "John", last_name: "Doe", amount: 22.30, email: "john@doe.com", country: "US"`
+`authorize` - `PriorityPayoutGateway::Transaction.new.authorize ccnumber: '4111111111111111', ccexp: "0219", first_name: "John", last_name: "Doe", amount: 22.25, email: "john@doe.com", country: "US" `
+`capture` - `PriorityPayoutGateway::Transaction.new.capture transactionid: 3261830498, amount: 22.30 `
+`void` - `PriorityPayoutGateway::Transaction.new.void transactionid: 3261830498, amount: 22.30 `
+`refund` - `PriorityPayoutGateway::Transaction.new.refund transactionid: 3261844010, amount: 5 `
+`update` - `PriorityPayoutGateway::Transaction.new.update transactionid: 3261844010, first_name: "joe" `
+`find` - Implements Query Api -  `PriorityPayoutGateway::Transaction.new.find transactionid: 3261844010 `
+`credit` - `PriorityPayoutGateway::Transaction.new.credit ccnumber: '4111111111111111', ccexp: "0219", first_name: "John", last_name: "Doe", amount: 22.30, email: "john@doe.com", country: "US" `
+`validate` - `PriorityPayoutGateway::Transaction.new.validate ccnumber: '4111111111111111', ccexp: "0219", first_name: "John", last_name: "Doe",  email: "john@doe.com", country: "US" `
+
+### Customer Vault
+`create` - `PriorityPayoutGateway::CustomerVault.new.create ccnumber: '4111111111111111', ccexp: "0219", first_name: "John", last_name: "Doe"`
+`update` - `PriorityPayoutGateway::CustomerVault.new.update customer_vault_id: 481397475, ccnumber: '4111111111111111', ccexp: "0220", first_name: "Jane", last_name: "Doe"`
+`destroy` - `PriorityPayoutGateway::CustomerVault.new.destroy customer_vault_id: 481397475`
+`find` - Implements Query Api - `PriorityPayoutGateway::CustomerVault.new.find customer_vault_id: 481397475`
+
+### Recurring
+`create_plan` - `PriorityPayoutGateway::Recurring.new.create_plan plan_amount: 1.99, plan_name: "Test 1.99", plan_id: "test-1", month_frequency: 1, day_of_month: 1`
+`add_subscription_to_plan` - `PriorityPayoutGateway::Recurring.new.add_subscription_to_plan plan_id: "test-1", customer_vault_id: 664625840`
+`add_custom_subscription` - `PriorityPayoutGateway::Recurring.new.add_custom_subscription plan_amount: 1.99, month_frequency: 1, day_of_month: 1,  customer_vault_id: 664625840`
+`update_subscription` - `PriorityPayoutGateway::Recurring.new.update_subscription subscription_id: "3261766445", first_name: "John", last_name: "Doe"`
+`delete_subscription` - `PriorityPayoutGateway::Recurring.new.delete_subscription subscription_id: "3261766445"`
+
 
 ## Development
 
@@ -32,7 +63,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/priority_payout_gateway.
+Bug reports and pull requests are welcome on GitHub at https://github.com/beneggett/priority_payout_gateway.
 
 
 ## License
