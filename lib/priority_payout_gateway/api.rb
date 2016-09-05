@@ -137,7 +137,7 @@ module PriorityPayoutGateway
       query[:sec_code]                     = options[:sec_code] #  'PPD', 'WEB', 'TEL', or 'CCD'
 
       # Optional order fields
-      query[:order_id]                     = options[:order_id]
+      query[:orderid]                      = options[:orderid]
       query[:order_description]            = options[:order_description]
       query[:order_date]                   = options[:order_date]
       query[:ponumber]                     = options[:ponumber]
